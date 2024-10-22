@@ -2,6 +2,7 @@ package com.game.Controller;
 
 import com.game.entity.User;
 import com.game.Service.UserService;
+import com.game.validateUser.LoginValidator;
 import com.game.validateUser.ValidateUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class AuthController {
         if (!validationErrors.isEmpty()) {
             // Pass validation errors to the view
             model.addAttribute("validationErrors", validationErrors);
+            model.addAttribute("user", user);
+
             return "register";
         }
 
@@ -57,15 +60,27 @@ public class AuthController {
     public String loginUser(@RequestParam("email") String email,
                             @RequestParam("password") String password,
                             Model model) {
+        // Validate input
+        Map<String, String> validationErrors = LoginValidator.validateLogin(email, password);
+
+        if (!validationErrors.isEmpty()) {
+            // Pass validation errors to the view
+            model.addAttribute("validationErrors", validationErrors);
+            model.addAttribute("email", email);
+            return "login";
+        }
+
+        // Authenticate user
         User user = userService.authenticateUser(email, password);
         if (user != null) {
             model.addAttribute("user", user);
-            return "dashboard";  // This will return the dashboard.jsp view
+            return "Dashboard";  // Redirect to the dashboard on successful login
         } else {
-            model.addAttribute("error", "Identifiants incorrects. Veuillez réessayer.");
-            return "login";  // This will return the login.jsp view
+            model.addAttribute("loginError", "Identifiants incorrects. Veuillez réessayer.");
+            return "login";  // Return to the login page with an error
         }
     }
+
 
     // Déconnexion
     @GetMapping("/logout")

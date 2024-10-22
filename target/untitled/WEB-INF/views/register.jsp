@@ -14,7 +14,7 @@
   <form action="${pageContext.request.contextPath}/register" method="post">
     <div class="mb-3">
       <label for="name" class="form-label">Nom</label>
-      <input type="text" name="name" class="form-control" id="name" />
+      <input type="text" name="name" class="form-control" id="name"  value="${user.name}" />
 
       <c:if test="${not empty validationErrors['nameError']}">
         <div class="text-danger">${validationErrors['nameError']}</div>
@@ -24,7 +24,7 @@
 
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>
-      <input type="email" name="email" class="form-control" id="email" />
+      <input type="email" name="email" class="form-control" id="email" value="${user.email}" />
       <c:if test="${not empty validationErrors['emailError']}">
         <div class="text-danger">${validationErrors['emailError']}</div>
       </c:if>
@@ -40,7 +40,7 @@
 
     <div class="mb-3">
       <label for="phoneNumber" class="form-label">Numéro de téléphone</label>
-      <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" />
+      <input type="text" name="phoneNumber" class="form-control" id="phoneNumber"  value="${user.phoneNumber}"/>
       <c:if test="${not empty validationErrors['phoneNumberError']}">
         <div class="text-danger">${validationErrors['phoneNumberError']}</div>
       </c:if>
@@ -48,7 +48,7 @@
 
     <div class="mb-3">
       <label for="address" class="form-label">Adresse</label>
-      <input type="text" name="address" class="form-control" id="address" />
+      <input type="text" name="address" class="form-control" id="address" value="${user.address}" />
       <c:if test="${not empty validationErrors['addressError']}">
         <div class="text-danger">${validationErrors['addressError']}</div>
       </c:if>
