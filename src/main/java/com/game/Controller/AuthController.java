@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
@@ -59,7 +61,7 @@ public class AuthController {
     @PostMapping("/login")
     public String loginUser(@RequestParam("email") String email,
                             @RequestParam("password") String password,
-                            Model model) {
+                            Model model , HttpSession session) {
         // Validate input
         Map<String, String> validationErrors = LoginValidator.validateLogin(email, password);
 
@@ -73,16 +75,24 @@ public class AuthController {
         // Authenticate user
         User user = userService.authenticateUser(email, password);
         if (user != null) {
-            model.addAttribute("user", user);
-            return "Dashboard";  // Redirect to the dashboard on successful login
+            session.setAttribute("user", user);
+            return "redirect:/Dashboard";  // Redirect to the dashboard on successful login
         } else {
             model.addAttribute("loginError", "Identifiants incorrects. Veuillez réessayer.");
-            return "login";  // Return to the login page with an error
+            return "redirect:/login";  // Return to the login page with an error
         }
     }
 
 
     // Déconnexion
+    @GetMapping("/Dashboard")
+    public String Dashboard(Model model , HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        System.out.println(user);
+        return "Dashboard";  // This will return the login.jsp view
+    }
+
     @GetMapping("/logout")
     public String logout(Model model) {
         model.addAttribute("message", "Vous avez été déconnecté avec succès.");

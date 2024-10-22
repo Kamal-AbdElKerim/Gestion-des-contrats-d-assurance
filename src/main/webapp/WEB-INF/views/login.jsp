@@ -15,6 +15,11 @@
     <c:if test="${not empty loginError}">
         <div class="alert alert-danger">${loginError}</div>
     </c:if>
+    <!-- Display general login error -->
+    <c:if test="${not empty param.loginError}">
+        <div class="alert alert-danger">${param.loginError}</div>
+    </c:if>
+
     <form action="${pageContext.request.contextPath}/login" method="post">
 
         <!-- Email field -->
@@ -35,10 +40,7 @@
             </c:if>
         </div>
 
-        <!-- Display general login error -->
-        <c:if test="${not empty param.loginError}">
-            <div class="text-danger">${param.loginError}</div>
-        </c:if>
+
 
         <button type="submit" class="btn btn-primary">Se connecter</button>
     </form>
