@@ -12,7 +12,7 @@
 <div class="container">
   <h2>Bienvenue, ${user.name}!</h2>
   <p>Voici votre tableau de bord.</p>
-  <!-- Add more dashboard content here -->
+  <a href="logout">logout</a>
 </div>
 </body>
 </html>
