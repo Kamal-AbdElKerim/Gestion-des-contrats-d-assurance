@@ -1,6 +1,9 @@
 package com.game.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Devis {
@@ -9,6 +12,15 @@ public class Devis {
     private Long id;
 
     private double montant;
+
+    private String status;
+
+    @Enumerated(EnumType.STRING) // Store as String in the database
+    private TypeAssurance typeAssurance;
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     @OneToOne
     @JoinColumn(name = "assurance_id")
@@ -23,6 +35,22 @@ public class Devis {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public TypeAssurance getTypeAssurance() {
+        return typeAssurance;
+    }
+
+    public void setTypeAssurance(TypeAssurance typeAssurance) {
+        this.typeAssurance = typeAssurance;
     }
 
     public double getMontant() {

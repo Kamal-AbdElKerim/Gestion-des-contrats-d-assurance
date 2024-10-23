@@ -1,13 +1,18 @@
 package com.game.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Automobile extends Assurance {
     private int conducteurAge;
     private String utilisation; // Private or professional use
     private String historiqueConduite;// true si des sinistres dans les 3 dernières années
-
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
     @OneToOne
     @JoinColumn(name = "vehicule_id")
     private Vehicule vehicule;
@@ -26,7 +31,20 @@ public class Automobile extends Assurance {
 
     @Override
     public double calculerMontant() {
-        return 0;
+        double base = 500; // Base for automobile insurance
+        if (conducteurAge < 25) {
+            base *= 1.10; // +10% for drivers under 25
+        }
+        if ("luxe".equalsIgnoreCase(utilisation)) {
+            base *= 1.15; // +15% for luxury vehicles
+        }
+        if ("professionnel".equalsIgnoreCase(utilisation)) {
+            base *= 1.10; // +10% for professional use
+        }
+        if ("false".equals(historiqueConduite)) {
+            base *= 0.80; // -20% for no accidents in the last 3 years
+        }
+        return base;
     }
 
     public int getConducteurAge() {

@@ -1,6 +1,9 @@
 package com.game.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Vehicule {
@@ -11,6 +14,10 @@ public class Vehicule {
     private String marque;
     private String modele;
     private String type;
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     @OneToOne
     @JoinColumn(name = "automobile_id")
