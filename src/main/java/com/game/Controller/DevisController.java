@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class DevisController {
 
     // Method to accept a Devis
     @GetMapping("/AccepteDevis")
-    public String acceptDevis(@RequestParam("id") Long id, Model model) {
+    public String acceptDevis(@RequestParam("id") Long id, Model model , HttpServletRequest request) {
         try {
 
             devisService.acceptDevis(id);
@@ -36,6 +37,7 @@ public class DevisController {
             model.addAttribute("error", "Error accepting the Devis: " + e.getMessage());
         }
 
-        return "redirect:/sante";
+        String referer = request.getHeader("Referer");
+        return "redirect:" + referer;
     }
 }

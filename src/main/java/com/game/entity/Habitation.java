@@ -16,11 +16,10 @@ public class Habitation extends Assurance {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @OneToOne
-    @JoinColumn(name = "localisation_id")
-    private Localisation localisation;
+    private boolean zoneRisque;
 
-
+    @OneToOne(mappedBy = "automobile")
+    protected Devis devis;
 
     public Habitation() {
 
@@ -42,12 +41,11 @@ public class Habitation extends Assurance {
     }
 
 
-    public Habitation(TypeAssurance typeAssurance, User user, double valeurBien, TypeLogement typeLogement, String systemeSecurite, Localisation localisation) {
+    public Habitation(TypeAssurance typeAssurance, User user, double valeurBien, TypeLogement typeLogement, String systemeSecurite) {
         super(typeAssurance, user); // Call the constructor of Assurance
         this.valeurBien = valeurBien;
         this.typeLogement = typeLogement;
         this.systemeSecurite = systemeSecurite;
-        this.localisation = localisation;
     }
 
     public double getValeurBien() {
@@ -74,13 +72,7 @@ public class Habitation extends Assurance {
         this.systemeSecurite = systemeSecurite;
     }
 
-    public Localisation getLocalisation() {
-        return localisation;
-    }
 
-    public void setLocalisation(Localisation localisation) {
-        this.localisation = localisation;
-    }
 
 
 }

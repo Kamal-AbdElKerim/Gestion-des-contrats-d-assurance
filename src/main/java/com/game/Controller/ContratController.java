@@ -1,12 +1,10 @@
 package com.game.Controller;
 
+import com.game.Service.AutomobileService;
 import com.game.Service.DevisService;
 import com.game.Service.SanteService;
-import com.game.entity.Contrat;
+import com.game.entity.*;
 import com.game.Service.ContratService;
-import com.game.entity.Devis;
-import com.game.entity.Sante;
-import com.game.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +30,8 @@ public class ContratController {
     private DevisService devisService;
     @Autowired
     private SanteService santeService;
+    @Autowired
+    private AutomobileService automobileService;
 
     @PostMapping("/contrat")
     public String submitContrat(
@@ -113,11 +113,18 @@ public class ContratController {
         return new ModelAndView("redirect:/allContrat");
     }
 
-    @GetMapping("/editContract/{id}")
-    public String showEditForm(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/editContractSante/{id}")
+    public String showEditFormSante(@PathVariable("id") Long id, Model model) {
         Contrat contrat = contratService.getContratById(id); // Fetch the contract to edit
         model.addAttribute("contrat", contrat);
         return "EditSanteContract"; // Return the view name for the edit form
+    }
+
+    @GetMapping("/editContractAutomobile/{id}")
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
+        Contrat contrat = contratService.getContratById(id); // Fetch the contract to edit
+        model.addAttribute("contrat", contrat);
+        return "EditAutomobileContract"; // Return the view name for the edit form
     }
 
     @PostMapping("/updateContract")
@@ -129,6 +136,22 @@ public class ContratController {
             devis.setMontant(montant);
             devisService.saveDevis(devis);
             santeService.saveSante(sante); // Update the contract using the service
+            redirectAttributes.addFlashAttribute("message", "updated successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error updating contract. Please try again.");
+        }
+        return "redirect:/allContrat"; // Redirect to the contracts page after update
+    }
+
+    @PostMapping("/updateContractAutomobile")
+    public String updateContractAutomobile(Automobile automobile, RedirectAttributes redirectAttributes) {
+        try {
+            double montant = automobile.calculerMontant();
+            System.out.println("montanttyy" + montant);
+            Devis  devis =  devisService.getDevisById(automobile.getId());
+            devis.setMontant(montant);
+            devisService.saveDevis(devis);
+            automobileService.saveAutomobile(automobile); // Update the contract using the service
             redirectAttributes.addFlashAttribute("message", "updated successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error updating contract. Please try again.");

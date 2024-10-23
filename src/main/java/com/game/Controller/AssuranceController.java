@@ -32,23 +32,36 @@ public class AssuranceController {
 
     @GetMapping("/automobile")
     public String showAutomobileInsuranceForm(Model model) {
-        model.addAttribute("automobile", new Automobile());
-        return "demande_devis_auto"; // JSP page for automobile insurance
+        List<Automobile> Automobile = automobileService.getAllAutomobile();
+        model.addAttribute("Automobile", Automobile);
+        return "demandeAutomobileDevis"; // JSP page for automobile insurance
     }
 
     @PostMapping("/automobile")
-    public String submitAutomobileInsurance(@ModelAttribute Automobile automobile, Model model) throws Exception {
+    public String submitAutomobileInsurance(@ModelAttribute Automobile automobile, Devis devis, Model model ,  HttpSession session) throws Exception {
+        User user = (User) session.getAttribute("user");
+        automobile.setUser(user);
+        double montant = automobile.calculerMontant();
+        automobile.setTypeAssurance(TypeAssurance.AUTOMOBILE);
+
         automobileService.saveAutomobile(automobile);
-        double montant = automobile.calculerMontant(); // Call your method to calculate premium
-        model.addAttribute("montant", montant);
-        return "resultat_devis_auto"; // JSP page to display automobile quote
+
+        // Now create the Devis instance
+        devis.setAutomobile(automobile);
+        devis.setMontant(montant);
+        devis.setTypeAssurance(TypeAssurance.AUTOMOBILE);
+        devis.setStatus(DevisStatus.PENDING);
+
+        devisService.saveDevis(devis); // Save Devis
+
+        return "redirect:/automobile";
     }
 
     @GetMapping("/sante")
     public String showHealthInsuranceForm(Model model) {
         List<Sante> Santes = santeService.getAllSante();
         model.addAttribute("Santes", Santes);
-        return "demandeDevis";
+        return "demandeSantesDevis";
     }
 
     @PostMapping("/sante")

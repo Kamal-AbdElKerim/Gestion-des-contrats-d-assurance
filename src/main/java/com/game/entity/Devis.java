@@ -26,6 +26,9 @@ public class Devis {
     @OneToOne
     @JoinColumn(name = "sante_id")
     private Sante sante;
+    @OneToOne
+    @JoinColumn(name = "automobile_id")
+    private Automobile automobile;
 
     @OneToOne(mappedBy = "devis")
     private Contrat contrat; // Devis peut être associé à un contrat
@@ -40,6 +43,22 @@ public class Devis {
 
     public Sante getSante() {
         return sante;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Automobile getAutomobile() {
+        return automobile;
+    }
+
+    public void setAutomobile(Automobile automobile) {
+        this.automobile = automobile;
     }
 
     public void setSante(Sante sante) {
