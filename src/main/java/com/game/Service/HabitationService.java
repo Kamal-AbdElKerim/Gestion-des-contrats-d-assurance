@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
+
 @Service
 @Validated
 public class HabitationService {
@@ -18,5 +20,7 @@ public class HabitationService {
         habitationRepository.save(habitation);
     }
 
-    // Additional logic for habitation insurance if needed
+    public List<Habitation> getAllHabitation() {
+        return habitationRepository.findAll(); // Using JpaRepository's built-in method
+    }
 }

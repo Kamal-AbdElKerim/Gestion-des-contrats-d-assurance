@@ -8,41 +8,86 @@ import java.time.LocalDateTime;
 @Entity
 public class Automobile extends Assurance {
     private int conducteurAge;
-    private String utilisation; // Private or professional use
-    private String historiqueConduite;// true si des sinistres dans les 3 dernières années
+    @Enumerated(EnumType.STRING)
+    private UtilisationVehicule utilisationVehicule;
+    @Enumerated(EnumType.STRING)
+    private TypeVehicule typeVehicule;
+    private boolean historiqueConduite;// true si des sinistres dans les 3 dernières années
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
-    @OneToOne
-    @JoinColumn(name = "vehicule_id")
-    private Vehicule vehicule;
 
-    public Automobile(TypeAssurance typeAssurance, User user, int conducteurAge, String utilisation, String historiqueConduite, Vehicule vehicule) {
+    @OneToOne(mappedBy = "automobile")
+    protected Devis devis;
+
+
+
+    public Automobile(TypeAssurance typeAssurance, User user, int conducteurAge) {
         super(typeAssurance, user); // Call the constructor of Assurance
         this.conducteurAge = conducteurAge;
-        this.utilisation = utilisation;
-        this.historiqueConduite = historiqueConduite;
-        this.vehicule = vehicule;
     }
 
     public Automobile() {
 
     }
 
+    public UtilisationVehicule getUtilisationVehicule() {
+        return utilisationVehicule;
+    }
+
+    public void setUtilisationVehicule(UtilisationVehicule utilisationVehicule) {
+        this.utilisationVehicule = utilisationVehicule;
+    }
+
+    public TypeVehicule getTypeVehicule() {
+        return typeVehicule;
+    }
+
+    public void setTypeVehicule(TypeVehicule typeVehicule) {
+        this.typeVehicule = typeVehicule;
+    }
+
+    public boolean isHistoriqueConduite() {
+        return historiqueConduite;
+    }
+
+    public void setHistoriqueConduite(boolean historiqueConduite) {
+        this.historiqueConduite = historiqueConduite;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Devis getDevis() {
+        return devis;
+    }
+
+    public void setDevis(Devis devis) {
+        this.devis = devis;
+    }
+
     @Override
     public double calculerMontant() {
         double base = 500; // Base for automobile insurance
         if (conducteurAge < 25) {
-            base *= 1.10; // +10% for drivers under 25
+            base += base * 0.10; // +10%
         }
-        if ("luxe".equalsIgnoreCase(utilisation)) {
-            base *= 1.15; // +15% for luxury vehicles
+        if (typeVehicule == typeVehicule.luxe) {
+            base += base * 0.15; // +15%
         }
-        if ("professionnel".equalsIgnoreCase(utilisation)) {
-            base *= 1.10; // +10% for professional use
+        if (utilisationVehicule == UtilisationVehicule.PROFESSIONNELLE) {
+            base += base * 0.10; // +10%
         }
-        if ("false".equals(historiqueConduite)) {
-            base *= 0.80; // -20% for no accidents in the last 3 years
+
+        if (historiqueConduite) {
+            base -= base * 0.20; // -20%
+        } else {
+            base += base * 0.10; // +10% sinon
         }
         return base;
     }
@@ -55,28 +100,10 @@ public class Automobile extends Assurance {
         this.conducteurAge = conducteurAge;
     }
 
-    public String getUtilisation() {
-        return utilisation;
-    }
 
-    public void setUtilisation(String utilisation) {
-        this.utilisation = utilisation;
-    }
 
-    public String getHistoriqueConduite() {
-        return historiqueConduite;
-    }
 
-    public void setHistoriqueConduite(String historiqueConduite) {
-        this.historiqueConduite = historiqueConduite;
-    }
 
-    public Vehicule getVehicule() {
-        return vehicule;
-    }
 
-    public void setVehicule(Vehicule vehicule) {
-        this.vehicule = vehicule;
-    }
 }
 

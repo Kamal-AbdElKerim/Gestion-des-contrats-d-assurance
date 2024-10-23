@@ -2,10 +2,7 @@ package com.game.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,6 +16,16 @@ public class Sante extends Assurance {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @OneToOne(mappedBy = "sante")
+    protected Devis devis;
+
+    public Devis getDevis() {
+        return devis;
+    }
+
+    public void setDevis(Devis devis) {
+        this.devis = devis;
+    }
 
     public Sante(TypeAssurance typeAssurance, User user, int age, boolean etatSante, TypeCouverture typeCouverture) {
         super(typeAssurance, user); // Call the constructor of Assurance
@@ -31,20 +38,27 @@ public class Sante extends Assurance {
 
     }
 
+
+
     @Override
     public double calculerMontant() {
-        double base = 150; // Base for health insurance
+        double base = 150.0; // Base en MAD
+
         if (age > 60) {
-            base *= 1.20; // +20% for people over 60
+            base += base * 0.20;
         }
+
         if (etatSante) {
-            base *= 1.30; // +30% for chronic illnesses
+            base += base * 0.30;
         }
-        if (typeCouverture == TypeCouverture.PREMIUM) {
-            base *= 1.05; // +5% for premium coverage
-        } else {
-            base *= 0.90; // -10% for basic coverage
+
+        // Ajustement selon le type de couverture
+        if (typeCouverture == typeCouverture.BASE) {
+            base -= base * 0.10;
+        } else if (typeCouverture == typeCouverture.PREMIUM) {
+            base += base * 0.05;
         }
+
         return base;
     }
 
@@ -73,5 +87,13 @@ public class Sante extends Assurance {
     public void setTypeCouverture(TypeCouverture typeCouverture) {
         this.typeCouverture = typeCouverture;
     }
+
+    public boolean isEtatSante() {
+        return etatSante;
+    }
+
+
+
+
 }
 

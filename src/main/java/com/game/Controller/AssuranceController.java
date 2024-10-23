@@ -32,36 +32,49 @@ public class AssuranceController {
 
     @GetMapping("/automobile")
     public String showAutomobileInsuranceForm(Model model) {
-        model.addAttribute("automobile", new Automobile());
-        return "demande_devis_auto"; // JSP page for automobile insurance
+        List<Automobile> Automobile = automobileService.getAllAutomobile();
+        model.addAttribute("Automobile", Automobile);
+        return "demandeAutomobileDevis"; // JSP page for automobile insurance
     }
 
     @PostMapping("/automobile")
-    public String submitAutomobileInsurance(@ModelAttribute Automobile automobile, Model model) throws Exception {
+    public String submitAutomobileInsurance(@ModelAttribute Automobile automobile, Devis devis, Model model ,  HttpSession session) throws Exception {
+        User user = (User) session.getAttribute("user");
+        automobile.setUser(user);
+        double montant = automobile.calculerMontant();
+        automobile.setTypeAssurance(TypeAssurance.AUTOMOBILE);
+
         automobileService.saveAutomobile(automobile);
-        double montant = automobile.calculerMontant(); // Call your method to calculate premium
-        model.addAttribute("montant", montant);
-        return "resultat_devis_auto"; // JSP page to display automobile quote
+
+        // Now create the Devis instance
+        devis.setAutomobile(automobile);
+        devis.setMontant(montant);
+        devis.setTypeAssurance(TypeAssurance.AUTOMOBILE);
+        devis.setStatus(DevisStatus.PENDING);
+
+        devisService.saveDevis(devis); // Save Devis
+
+        return "redirect:/automobile";
     }
 
     @GetMapping("/sante")
     public String showHealthInsuranceForm(Model model) {
         List<Sante> Santes = santeService.getAllSante();
         model.addAttribute("Santes", Santes);
-        return "demandeDevis";
+        return "demandeSantesDevis";
     }
 
     @PostMapping("/sante")
-    public String submitHealthInsurance(@ModelAttribute Sante sante, Model model , HttpSession session , Devis devis) throws Exception {
+    public String submitHealthInsurance(@ModelAttribute Sante sante, Model model , HttpSession session , Devis devis ) throws Exception {
         User user = (User) session.getAttribute("user");
         sante.setUser(user);
-        System.out.println("TypeCouverture.PREMIUM "+TypeCouverture.PREMIUM);
         // Determine coverage type
         if (sante.getTypeCouverture().equals("PREMIUM")) {
             sante.setTypeCouverture(TypeCouverture.PREMIUM);
         } else {
             sante.setTypeCouverture(TypeCouverture.BASE);
         }
+
 
         // Calculate the insurance amount
         double montant = sante.calculerMontant();
@@ -71,7 +84,7 @@ public class AssuranceController {
         santeService.saveSante(sante);
 
         // Now create the Devis instance
-        devis.setAssurance(sante); // Link to the saved Sante instance
+        devis.setSante(sante); // Link to the saved Sante instance
         devis.setMontant(montant);
         devis.setTypeAssurance(TypeAssurance.SANTE);
         devis.setStatus(DevisStatus.PENDING);
@@ -83,15 +96,32 @@ public class AssuranceController {
 
     @GetMapping("/habitation")
     public String showHomeInsuranceForm(Model model) {
-        model.addAttribute("habitation", new Habitation());
-        return "demandeDevis"; // JSP page for home insurance
+        List<Habitation> Habitation = habitationService.getAllHabitation();
+        model.addAttribute("Habitation", Habitation);
+        return "demandeHabitationDevis";
     }
 
     @PostMapping("/habitation")
-    public String submitHomeInsurance(@ModelAttribute Habitation habitation, Model model) throws Exception {
+    public String submitHomeInsurance(@ModelAttribute Habitation habitation, HttpSession session , Model model ,Devis devis) throws Exception {
         habitationService.saveHabitation(habitation);
-        double montant = habitation.calculerMontant(); // Call your method to calculate premium
-        model.addAttribute("montant", montant);
-        return "resultat_devis_habitation"; // JSP page to display home quote
+        User user = (User) session.getAttribute("user");
+        habitation.setUser(user);
+
+        // Calculate the insurance amount
+        double montant = habitation.calculerMontant();
+        habitation.setTypeAssurance(TypeAssurance.HABITATION);
+
+        // Save the Sante instance first
+        habitationService.saveHabitation(habitation);
+
+        // Now create the Devis instance
+        devis.setHabitation(habitation); // Link to the saved Sante instance
+        devis.setMontant(montant);
+        devis.setTypeAssurance(TypeAssurance.HABITATION);
+        devis.setStatus(DevisStatus.PENDING);
+
+        devisService.saveDevis(devis); // Save Devis
+
+        return "redirect:/habitation";
     }
 }

@@ -21,7 +21,7 @@
 
   <!-- Modal for Automobile -->
   <div id="modalAutomobile" class="modal">
-    <form class="modal-content animate" action="/automobile" method="post">
+    <form class="modal-content animate" action="${pageContext.request.contextPath}/automobile" method="post">
       <div class="imgcontainer">
         <span onclick="document.getElementById('modalAutomobile').style.display='none'" class="close" title="Close Modal">&times;</span>
         <img src="img_avatar2.png" alt="Avatar" class="avatar">
@@ -30,17 +30,24 @@
         <label for="conducteurAge"><b>Âge du conducteur</b></label>
         <input id="conducteurAge" type="number" placeholder="Entrez l'âge" name="conducteurAge" required>
 
-        <label for="typeVehicule"><b>Type de véhicule</b></label>
-        <input id="typeVehicule" type="text" placeholder="Modèle, marque, type (luxe, utilitaire, etc.)" name="typeVehicule" required>
-
-        <label for="utilisation"><b>Utilisation du véhicule</b></label>
-        <select id="utilisation" name="utilisation" required>
-          <option value="privée">Privée</option>
-          <option value="professionnelle">Professionnelle</option>
+        <label for="véhicule"><b>Type de véhicule</b></label>
+        <select id="véhicule" name="typeVehicule" required>
+          <option value="luxe">luxe</option>
+          <option value="utilitaire">utilitaire</option>
         </select>
 
-        <label for="historique"><b>Historique de conduite</b></label>
-        <input id="historique" type="text" placeholder="Accidents, infractions" name="historique" required>
+        <label for="utilisation"><b>Utilisation du véhicule</b></label>
+        <select id="utilisation" name="utilisationVehicule" required>
+          <option value="PRIVEE">Privée</option>
+          <option value="PROFESSIONNELLE">Professionnelle</option>
+        </select>
+
+        <div class="form-check">
+          <input name="historiqueConduite" class="form-check-input" type="checkbox"  id="flexCheckChecked" checked>
+          <label class="form-check-label" for="flexCheckChecked">
+            historiqueConduite
+          </label>
+        </div>
 
         <button type="submit" class="btn btn-primary">Calculer le devis</button>
       </div>
@@ -79,7 +86,7 @@
 
   <!-- Modal for Habitation -->
   <div id="modalHabitation" class="modal">
-    <form class="modal-content animate" action="/habitation" method="post">
+    <form class="modal-content animate" action="${pageContext.request.contextPath}/habitation" method="post">
       <div class="imgcontainer">
         <span onclick="document.getElementById('modalHabitation').style.display='none'" class="close" title="Close Modal">&times;</span>
         <img src="img_avatar2.png" alt="Avatar" class="avatar">
@@ -89,19 +96,17 @@
         <input id="valeurBien" type="number" placeholder="Entrez la valeur du bien" name="valeurBien" required>
 
         <label for="typeLogement"><b>Type de logement</b></label>
-        <select id="typeLogement" name="typeLogement" required>
-          <option value="appartement">Appartement</option>
-          <option value="maison">Maison</option>
+        <select  id="typeLogement" name="typeLogement" required>
+          <option value="APPARTEMENT">APPARTEMENT</option>
+          <option value="HOUSE">HOUSE</option>
         </select>
 
-        <label for="localisation"><b>Localisation</b></label>
-        <input id="localisation" type="text" placeholder="Zone à risque" name="localisation" required>
+        <label for="localisation"><b>zone Risque</b></label>
+        <input id="localisation" type="checkbox" placeholder="Zone à risque" name="zoneRisque" required>
 
-        <label for="securite"><b>Système de sécurité</b></label>
-        <select id="securite" name="securite" required>
-          <option value="oui">Oui</option>
-          <option value="non">Non</option>
-        </select>
+        <label for="securite"><b>systeme Securite</b></label>
+        <input id="securite" type="checkbox"  name="systemeSecurite" required>
+
 
         <button type="submit" class="btn btn-primary">Calculer le devis</button>
       </div>

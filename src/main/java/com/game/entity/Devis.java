@@ -24,8 +24,15 @@ public class Devis {
     private LocalDateTime createdAt;
 
     @OneToOne
-    @JoinColumn(name = "assurance_id")
-    private Assurance assurance; // Devis est lié à une assurance
+    @JoinColumn(name = "sante_id")
+    private Sante sante;
+    @OneToOne
+    @JoinColumn(name = "automobile_id")
+    private Automobile automobile;
+
+    @OneToOne
+    @JoinColumn(name = "habitation_id")
+    private Habitation habitation;
 
     @OneToOne(mappedBy = "devis")
     private Contrat contrat; // Devis peut être associé à un contrat
@@ -38,12 +45,44 @@ public class Devis {
         this.id = id;
     }
 
+    public Sante getSante() {
+        return sante;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Automobile getAutomobile() {
+        return automobile;
+    }
+
+    public void setAutomobile(Automobile automobile) {
+        this.automobile = automobile;
+    }
+
+    public void setSante(Sante sante) {
+        this.sante = sante;
+    }
+
     public DevisStatus getStatus() {
         return status;
     }
 
     public void setStatus(DevisStatus status) {
         this.status = status;
+    }
+
+    public Habitation getHabitation() {
+        return habitation;
+    }
+
+    public void setHabitation(Habitation habitation) {
+        this.habitation = habitation;
     }
 
     public TypeAssurance getTypeAssurance() {
@@ -62,13 +101,7 @@ public class Devis {
         this.montant = montant;
     }
 
-    public Assurance getAssurance() {
-        return assurance;
-    }
 
-    public void setAssurance(Assurance assurance) {
-        this.assurance = assurance;
-    }
 
     public Contrat getContrat() {
         return contrat;

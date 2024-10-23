@@ -41,6 +41,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Assurance> assurances;
 
+    @OneToMany(mappedBy = "user")
+    private List<Contrat> contrats;
+
     public User(Long id, String name, String email, String password, String phoneNumber, String address, List<Assurance> assurances) {
         this.id = id;
         this.name = name;

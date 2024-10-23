@@ -11,12 +11,14 @@ public abstract class Assurance {
     @Enumerated(EnumType.STRING)
     protected TypeAssurance typeAssurance ;
 
-    @OneToOne(mappedBy = "assurance")
-    protected Devis devis;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     protected User user;
+
+
+
 
     public Assurance(TypeAssurance typeAssurance, User user) {
         this.typeAssurance = typeAssurance;
@@ -46,13 +48,7 @@ public abstract class Assurance {
         this.typeAssurance = typeAssurance;
     }
 
-    public Devis getDevis() {
-        return devis;
-    }
 
-    public void setDevis(Devis devis) {
-        this.devis = devis;
-    }
 
     public User getUser() {
         return user;
@@ -61,4 +57,8 @@ public abstract class Assurance {
     public void setUser(User user) {
         this.user = user;
     }
+
+
+
+
 }

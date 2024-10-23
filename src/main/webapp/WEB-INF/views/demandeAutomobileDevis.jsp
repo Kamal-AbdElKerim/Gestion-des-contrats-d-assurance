@@ -1,3 +1,4 @@
+<%@ page import="com.game.entity.User" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,36 +10,43 @@
 <div class="container my-5">
   <h1 class="text-center mb-4">Health Insurance Quotes</h1>
   <div class="row container ">
-    <c:forEach var="sante" items="${Santes}">
+    <c:forEach var="automobile" items="${Automobile}">
+      <% User user = (User) session.getAttribute("user"); %>
+      <c:if test="${automobile.user.id == user.id}">  <!-- Compare user IDs -->
 
       <div class="col-4 mb-4 ">
 
 
           <div class="card " style="width: 18rem;">
-            <img src="https://weassur.ma/wp-content/uploads/2022/05/ASSURANCE-SANTE.jpg" class="card-img-top" alt="...">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFngbrQUFD_57VZ7xUS9AzXbdFd-kPixlYTQ&s" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title">Assurance Type: ${sante.typeAssurance}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Coverage Type: ${sante.typeCouverture}</h6>
-              <p class="card-text">Amount: ${sante.devis.montant} MAD</p>
-              <p class="card-text">User: ${sante.user.name} </p>
+              <h5 class="card-title">Assurance Type: ${automobile.typeAssurance}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">conducteurAge: ${automobile.conducteurAge}</h6>
+              <p class="card-text">Amount: ${automobile.devis.montant} MAD</p>
+              <p class="card-text">User: ${automobile.user.name} </p>
               <p class="card-text">Other Details: <!-- Add any additional details here --></p>
 
 
-              <c:if test="${sante.devis.status != 'ACCEPTED'}">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${sante.id}">
+              <c:if test="${automobile.devis.status != 'ACCEPTED'}">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${automobile.id}">
                   Accepte
                 </button>
               </c:if>
-              <c:if test="${sante.devis.status == 'ACCEPTED'}">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Contrat${sante.id}">
+              <c:if test="${automobile.devis.status == 'ACCEPTED' && automobile.devis.contrat.datedebut == null }">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Contrat${automobile.id}">
                   Registre Contrat
+                </button>
+              </c:if>
+              <c:if test="${automobile.devis.contrat.datedebut != null }">
+                <button disabled type="button" class="btn btn-primary">
+                  Done
                 </button>
               </c:if>
             </div>
           </div>
           </div>
 
-        <div class="modal fade" id="exampleModal${sante.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal${automobile.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -46,11 +54,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                  ${sante.id}
+                  ${automobile.id}
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <a href="${pageContext.request.contextPath}/AccepteDevis?id=${sante.id}" class="btn btn-primary">Accepte</a>
+                  <a href="${pageContext.request.contextPath}/AccepteDevis?id=${automobile.devis.id}" class="btn btn-primary">Accepte</a>
 
 
               </div>
@@ -59,7 +67,7 @@
         </div>
 
 
-      <div class="modal fade" id="Contrat${sante.id}" tabindex="-1" aria-labelledby="exampleModalLabe" aria-hidden="true">
+      <div class="modal fade" id="Contrat${automobile.id}" tabindex="-1" aria-labelledby="exampleModalLabe" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -84,7 +92,7 @@
                   <label class="form-check-label" for="flexRadioDefault3" checked>12 mois</label>
                 </div>
 
-                <input name="IDDevis" value="${sante.devis.id}" type="hidden">
+                <input name="IDDevis" value="${automobile.devis.id}" type="hidden">
 
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -96,7 +104,7 @@
           </div>
         </div>
       </div>
-
+      </c:if>
     </c:forEach>
 
   </div>
