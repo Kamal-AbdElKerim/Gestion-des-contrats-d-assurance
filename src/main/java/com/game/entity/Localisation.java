@@ -1,6 +1,9 @@
 package com.game.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Localisation {
@@ -10,6 +13,10 @@ public class Localisation {
 
     private String adresse;
     private String zoneRisque; // Zone à risque ou non
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     @OneToOne
     @JoinColumn(name = "habitation_id")

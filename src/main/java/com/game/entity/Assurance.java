@@ -8,7 +8,7 @@ public abstract class Assurance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
-
+    @Enumerated(EnumType.STRING)
     protected TypeAssurance typeAssurance ;
 
     @OneToOne(mappedBy = "assurance")

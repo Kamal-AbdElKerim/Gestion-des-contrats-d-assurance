@@ -1,6 +1,9 @@
 package com.game.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Contrat {
@@ -8,7 +11,22 @@ public class Contrat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String statut; // Actif, résilié, etc.
+
+    @Column(name = "datedebut", updatable = false)
+    private LocalDateTime datedebut;
+
+    @Column(name = "datefin", updatable = false)
+    private LocalDateTime datefin;
+
+    // Store file path instead of the file itself
+    @Column(name = "file_path")
+    private String filePath;
+
+    @Column(name = "file_name")
+    private String fileName;
+
+    @Column(name = "file_type")
+    private String fileType;
 
     @OneToOne
     @JoinColumn(name = "devis_id")
@@ -22,13 +40,7 @@ public class Contrat {
         this.id = id;
     }
 
-    public String getStatut() {
-        return statut;
-    }
 
-    public void setStatut(String statut) {
-        this.statut = statut;
-    }
 
     public Devis getDevis() {
         return devis;
