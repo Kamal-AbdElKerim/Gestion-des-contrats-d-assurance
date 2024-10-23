@@ -30,6 +30,10 @@ public class Devis {
     @JoinColumn(name = "automobile_id")
     private Automobile automobile;
 
+    @OneToOne
+    @JoinColumn(name = "habitation_id")
+    private Habitation habitation;
+
     @OneToOne(mappedBy = "devis")
     private Contrat contrat; // Devis peut être associé à un contrat
 
@@ -71,6 +75,14 @@ public class Devis {
 
     public void setStatus(DevisStatus status) {
         this.status = status;
+    }
+
+    public Habitation getHabitation() {
+        return habitation;
+    }
+
+    public void setHabitation(Habitation habitation) {
+        this.habitation = habitation;
     }
 
     public TypeAssurance getTypeAssurance() {

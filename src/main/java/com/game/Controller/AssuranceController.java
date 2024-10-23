@@ -96,15 +96,32 @@ public class AssuranceController {
 
     @GetMapping("/habitation")
     public String showHomeInsuranceForm(Model model) {
-        model.addAttribute("habitation", new Habitation());
-        return "demandeDevis"; // JSP page for home insurance
+        List<Habitation> Habitation = habitationService.getAllHabitation();
+        model.addAttribute("Habitation", Habitation);
+        return "demandeHabitationDevis";
     }
 
     @PostMapping("/habitation")
-    public String submitHomeInsurance(@ModelAttribute Habitation habitation, Model model) throws Exception {
+    public String submitHomeInsurance(@ModelAttribute Habitation habitation, HttpSession session , Model model ,Devis devis) throws Exception {
         habitationService.saveHabitation(habitation);
-        double montant = habitation.calculerMontant(); // Call your method to calculate premium
-        model.addAttribute("montant", montant);
-        return "resultat_devis_habitation"; // JSP page to display home quote
+        User user = (User) session.getAttribute("user");
+        habitation.setUser(user);
+
+        // Calculate the insurance amount
+        double montant = habitation.calculerMontant();
+        habitation.setTypeAssurance(TypeAssurance.HABITATION);
+
+        // Save the Sante instance first
+        habitationService.saveHabitation(habitation);
+
+        // Now create the Devis instance
+        devis.setHabitation(habitation); // Link to the saved Sante instance
+        devis.setMontant(montant);
+        devis.setTypeAssurance(TypeAssurance.HABITATION);
+        devis.setStatus(DevisStatus.PENDING);
+
+        devisService.saveDevis(devis); // Save Devis
+
+        return "redirect:/habitation";
     }
 }

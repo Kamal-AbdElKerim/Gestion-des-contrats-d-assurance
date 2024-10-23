@@ -42,18 +42,23 @@ public class Sante extends Assurance {
 
     @Override
     public double calculerMontant() {
-        double base = 150; // Base for health insurance
+        double base = 150.0; // Base en MAD
+
         if (age > 60) {
-            base *= 1.20; // +20% for people over 60
+            base += base * 0.20;
         }
+
         if (etatSante) {
-            base *= 1.30; // +30% for chronic illnesses
+            base += base * 0.30;
         }
-        if (typeCouverture == TypeCouverture.PREMIUM) {
-            base *= 1.05; // +5% for premium coverage
-        } else {
-            base *= 0.90; // -10% for basic coverage
+
+        // Ajustement selon le type de couverture
+        if (typeCouverture == typeCouverture.BASE) {
+            base -= base * 0.10;
+        } else if (typeCouverture == typeCouverture.PREMIUM) {
+            base += base * 0.05;
         }
+
         return base;
     }
 

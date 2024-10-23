@@ -1,10 +1,7 @@
 package com.game.Controller;
 
-import com.game.Service.AutomobileService;
-import com.game.Service.DevisService;
-import com.game.Service.SanteService;
+import com.game.Service.*;
 import com.game.entity.*;
-import com.game.Service.ContratService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +29,8 @@ public class ContratController {
     private SanteService santeService;
     @Autowired
     private AutomobileService automobileService;
+    @Autowired
+    private HabitationService habitationService;
 
     @PostMapping("/contrat")
     public String submitContrat(
@@ -126,6 +125,12 @@ public class ContratController {
         model.addAttribute("contrat", contrat);
         return "EditAutomobileContract"; // Return the view name for the edit form
     }
+    @GetMapping("/editContractHabitation/{id}")
+    public String showEditFormHabitation(@PathVariable("id") Long id, Model model) {
+        Contrat contrat = contratService.getContratById(id); // Fetch the contract to edit
+        model.addAttribute("contrat", contrat);
+        return "EditHabitationContract"; // Return the view name for the edit form
+    }
 
     @PostMapping("/updateContract")
     public String updateContract(Sante sante, RedirectAttributes redirectAttributes) {
@@ -152,6 +157,21 @@ public class ContratController {
             devis.setMontant(montant);
             devisService.saveDevis(devis);
             automobileService.saveAutomobile(automobile); // Update the contract using the service
+            redirectAttributes.addFlashAttribute("message", "updated successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error updating contract. Please try again.");
+        }
+        return "redirect:/allContrat"; // Redirect to the contracts page after update
+    }
+    @PostMapping("/updateContractHabitation")
+    public String updateContractHabitation(Habitation habitation, RedirectAttributes redirectAttributes) {
+        try {
+            double montant = habitation.calculerMontant();
+            System.out.println("montanttyy" + montant);
+            Devis  devis =  devisService.getDevisById(habitation.getId());
+            devis.setMontant(montant);
+            devisService.saveDevis(devis);
+            habitationService.saveHabitation(habitation); // Update the contract using the service
             redirectAttributes.addFlashAttribute("message", "updated successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error updating contract. Please try again.");

@@ -10,7 +10,7 @@ public class Habitation extends Assurance {
     private double valeurBien;
     @Enumerated(EnumType.STRING)
     private TypeLogement typeLogement; // Apartment, house, etc.
-    private String systemeSecurite; // Appartement, maison, etc.
+    private boolean systemeSecurite; // Appartement, maison, etc.
 
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp
@@ -18,7 +18,7 @@ public class Habitation extends Assurance {
 
     private boolean zoneRisque;
 
-    @OneToOne(mappedBy = "automobile")
+    @OneToOne(mappedBy = "habitation")
     protected Devis devis;
 
     public Habitation() {
@@ -27,25 +27,61 @@ public class Habitation extends Assurance {
 
     @Override
     public double calculerMontant() {
-        double base = 300; // Base for home insurance
-        if (valeurBien > 200000) {
-            base *= 1.10; // +10% for properties over 200,000 MAD
+        double base = 300.0;
+
+        if (typeLogement == typeLogement.HOUSE) {
+            base += base * 0.02;
         }
-        if ("maison".equalsIgnoreCase(typeLogement.toString())) {
-            base *= 1.02; // +2% for houses
+
+        if (zoneRisque) {
+            base += base * 0.05;
         }
-        if ("zone à risque".equalsIgnoreCase(systemeSecurite)) {
-            base *= 1.05; // +5% for high-risk areas
+
+        if (valeurBien > 200_000) {
+            base += base * 0.10;
         }
+
+        if (systemeSecurite) {
+            base -= base * 0.15;
+        } else {
+            base += base * 0.15;
+        }
+
         return base;
     }
 
+    public boolean isSystemeSecurite() {
+        return systemeSecurite;
+    }
 
-    public Habitation(TypeAssurance typeAssurance, User user, double valeurBien, TypeLogement typeLogement, String systemeSecurite) {
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public boolean isZoneRisque() {
+        return zoneRisque;
+    }
+
+    public void setZoneRisque(boolean zoneRisque) {
+        this.zoneRisque = zoneRisque;
+    }
+
+    public Devis getDevis() {
+        return devis;
+    }
+
+    public void setDevis(Devis devis) {
+        this.devis = devis;
+    }
+
+    public Habitation(TypeAssurance typeAssurance, User user, double valeurBien, TypeLogement typeLogement) {
         super(typeAssurance, user); // Call the constructor of Assurance
         this.valeurBien = valeurBien;
         this.typeLogement = typeLogement;
-        this.systemeSecurite = systemeSecurite;
     }
 
     public double getValeurBien() {
@@ -64,11 +100,11 @@ public class Habitation extends Assurance {
         this.typeLogement = typeLogement;
     }
 
-    public String getSystemeSecurite() {
+    public boolean getSystemeSecurite() {
         return systemeSecurite;
     }
 
-    public void setSystemeSecurite(String systemeSecurite) {
+    public void setSystemeSecurite(boolean systemeSecurite) {
         this.systemeSecurite = systemeSecurite;
     }
 

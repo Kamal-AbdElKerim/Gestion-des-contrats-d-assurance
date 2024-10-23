@@ -43,6 +43,7 @@
             <th>montant</th>
             <th>age</th>
             <th>etatSante</th>
+
             <th>Actions</th>
         </tr>
         </thead>
@@ -53,14 +54,24 @@
                 <td>${contrat.formattedDatefin}</td>
                 <td>${contrat.devis.typeAssurance}</td>
                 <td>${contrat.devis.montant}</td>
-                <td>${contrat.devis.sante.age == null ? contrat.devis.automobile.conducteurAge : ''}</td>
-                <td>${contrat.devis.sante.etatSante == null ? contrat.devis.automobile.typeVehicule : ''}</td>
+                <c:if test="${contrat.devis.habitation == null}">
+                <td>${contrat.devis.sante.age == null ? contrat.devis.automobile.conducteurAge : contrat.devis.sante.age}</td>
+                <td>${contrat.devis.sante.etatSante == null ? contrat.devis.automobile.typeVehicule : contrat.devis.sante.etatSante}</td>
+                </c:if>
+                <c:if test="${contrat.devis.habitation != null}">
+                    <td>zoneRisque :${contrat.devis.habitation.zoneRisque}</td>
+                    <td>systemeSecurite :${contrat.devis.habitation.systemeSecurite}</td>
+
+                </c:if>
                 <td>
                     <c:if test="${contrat.devis.sante.age != null}">
                     <a href="${pageContext.request.contextPath}/editContractSante/${contrat.id}" class="btn btn-warning btn-sm">Edit</a>
                     </c:if>
                     <c:if test="${contrat.devis.automobile.conducteurAge != null}">
                         <a href="${pageContext.request.contextPath}/editContractAutomobile/${contrat.id}" class="btn btn-warning btn-sm">Edit</a>
+                    </c:if>
+                    <c:if test="${contrat.devis.habitation != null}">
+                        <a href="${pageContext.request.contextPath}/editContractHabitation/${contrat.id}" class="btn btn-warning btn-sm">Edit</a>
                     </c:if>
                     <a href="${pageContext.request.contextPath}/deleteContract/${contrat.id}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this contract?');">terminate contract</a>
                 </td>
