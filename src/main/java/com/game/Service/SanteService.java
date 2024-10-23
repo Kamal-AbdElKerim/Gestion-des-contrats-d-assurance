@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
+
 @Service
 @Validated
 public class SanteService {
@@ -18,5 +20,10 @@ public class SanteService {
         santeRepository.save(sante);
     }
 
-    // Additional logic for health insurance if needed
+    public List<Sante> getAllSante() {
+        // Logic to retrieve all health insurance records
+        return santeRepository.findAll(); // Using JpaRepository's built-in method
+    }
+
+
 }

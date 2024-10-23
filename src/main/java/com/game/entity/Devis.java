@@ -13,7 +13,8 @@ public class Devis {
 
     private double montant;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private DevisStatus status;
 
     @Enumerated(EnumType.STRING) // Store as String in the database
     private TypeAssurance typeAssurance;
@@ -37,11 +38,11 @@ public class Devis {
         this.id = id;
     }
 
-    public String getStatus() {
+    public DevisStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(DevisStatus status) {
         this.status = status;
     }
 

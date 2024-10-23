@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class AssuranceController {
@@ -45,8 +46,9 @@ public class AssuranceController {
 
     @GetMapping("/sante")
     public String showHealthInsuranceForm(Model model) {
-        model.addAttribute("sante", new Sante());
-        return "demande_devis_sante"; // JSP page for health insurance
+        List<Sante> Santes = santeService.getAllSante();
+        model.addAttribute("Santes", Santes);
+        return "demandeDevis";
     }
 
     @PostMapping("/sante")
@@ -72,15 +74,17 @@ public class AssuranceController {
         devis.setAssurance(sante); // Link to the saved Sante instance
         devis.setMontant(montant);
         devis.setTypeAssurance(TypeAssurance.SANTE);
+        devis.setStatus(DevisStatus.PENDING);
+
         devisService.saveDevis(devis); // Save Devis
-        model.addAttribute("montant", montant);
-        return "resultat_devis_sante"; // JSP page to display health quote
+
+        return "redirect:/sante";
     }
 
     @GetMapping("/habitation")
     public String showHomeInsuranceForm(Model model) {
         model.addAttribute("habitation", new Habitation());
-        return "demande_devis_habitation"; // JSP page for home insurance
+        return "demandeDevis"; // JSP page for home insurance
     }
 
     @PostMapping("/habitation")
