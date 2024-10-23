@@ -4,6 +4,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class Contrat {
@@ -11,6 +12,9 @@ public class Contrat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne // Assuming many contracts can belong to one user
+    @JoinColumn(name = "user_id") // The name of the foreign key column
+    private User user;
 
     @Column(name = "datedebut", updatable = false)
     private LocalDateTime datedebut;
@@ -31,6 +35,14 @@ public class Contrat {
     @OneToOne
     @JoinColumn(name = "devis_id")
     private Devis devis; // Contrat est lié à un devis
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Long getId() {
         return id;
@@ -86,5 +98,15 @@ public class Contrat {
 
     public void setDevis(Devis devis) {
         this.devis = devis;
+    }
+
+    public String getFormattedDatefin() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return datefin.toLocalDate().format(formatter);
+    }
+
+    public String getFormattedDatedebut() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return datedebut.toLocalDate().format(formatter);
     }
 }

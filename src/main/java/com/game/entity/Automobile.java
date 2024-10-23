@@ -17,6 +17,8 @@ public class Automobile extends Assurance {
     @JoinColumn(name = "vehicule_id")
     private Vehicule vehicule;
 
+
+
     public Automobile(TypeAssurance typeAssurance, User user, int conducteurAge, String utilisation, String historiqueConduite, Vehicule vehicule) {
         super(typeAssurance, user); // Call the constructor of Assurance
         this.conducteurAge = conducteurAge;
@@ -78,5 +80,7 @@ public class Automobile extends Assurance {
     public void setVehicule(Vehicule vehicule) {
         this.vehicule = vehicule;
     }
+
+
 }
 

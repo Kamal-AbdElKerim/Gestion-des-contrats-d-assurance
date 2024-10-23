@@ -20,6 +20,8 @@ public class Habitation extends Assurance {
     @JoinColumn(name = "localisation_id")
     private Localisation localisation;
 
+
+
     public Habitation() {
 
     }
@@ -79,5 +81,7 @@ public class Habitation extends Assurance {
     public void setLocalisation(Localisation localisation) {
         this.localisation = localisation;
     }
+
+
 }
 

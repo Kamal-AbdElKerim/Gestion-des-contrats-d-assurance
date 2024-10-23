@@ -52,16 +52,16 @@ public class AssuranceController {
     }
 
     @PostMapping("/sante")
-    public String submitHealthInsurance(@ModelAttribute Sante sante, Model model , HttpSession session , Devis devis) throws Exception {
+    public String submitHealthInsurance(@ModelAttribute Sante sante, Model model , HttpSession session , Devis devis ) throws Exception {
         User user = (User) session.getAttribute("user");
         sante.setUser(user);
-        System.out.println("TypeCouverture.PREMIUM "+TypeCouverture.PREMIUM);
         // Determine coverage type
         if (sante.getTypeCouverture().equals("PREMIUM")) {
             sante.setTypeCouverture(TypeCouverture.PREMIUM);
         } else {
             sante.setTypeCouverture(TypeCouverture.BASE);
         }
+
 
         // Calculate the insurance amount
         double montant = sante.calculerMontant();
@@ -71,7 +71,7 @@ public class AssuranceController {
         santeService.saveSante(sante);
 
         // Now create the Devis instance
-        devis.setAssurance(sante); // Link to the saved Sante instance
+        devis.setSante(sante); // Link to the saved Sante instance
         devis.setMontant(montant);
         devis.setTypeAssurance(TypeAssurance.SANTE);
         devis.setStatus(DevisStatus.PENDING);

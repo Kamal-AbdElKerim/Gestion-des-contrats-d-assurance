@@ -1,3 +1,4 @@
+<%@ page import="com.game.entity.User" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,6 +11,8 @@
   <h1 class="text-center mb-4">Health Insurance Quotes</h1>
   <div class="row container ">
     <c:forEach var="sante" items="${Santes}">
+      <% User user = (User) session.getAttribute("user"); %>
+      <c:if test="${sante.user.id == user.id}">  <!-- Compare user IDs -->
 
       <div class="col-4 mb-4 ">
 
@@ -29,9 +32,14 @@
                   Accepte
                 </button>
               </c:if>
-              <c:if test="${sante.devis.status == 'ACCEPTED'}">
+              <c:if test="${sante.devis.status == 'ACCEPTED' && sante.devis.contrat.datedebut == null }">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Contrat${sante.id}">
                   Registre Contrat
+                </button>
+              </c:if>
+              <c:if test="${sante.devis.contrat.datedebut != null }">
+                <button disabled type="button" class="btn btn-primary">
+                  Done
                 </button>
               </c:if>
             </div>
@@ -96,7 +104,7 @@
           </div>
         </div>
       </div>
-
+      </c:if>
     </c:forEach>
 
   </div>

@@ -2,10 +2,7 @@ package com.game.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,6 +16,16 @@ public class Sante extends Assurance {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @OneToOne(mappedBy = "sante")
+    protected Devis devis;
+
+    public Devis getDevis() {
+        return devis;
+    }
+
+    public void setDevis(Devis devis) {
+        this.devis = devis;
+    }
 
     public Sante(TypeAssurance typeAssurance, User user, int age, boolean etatSante, TypeCouverture typeCouverture) {
         super(typeAssurance, user); // Call the constructor of Assurance
@@ -30,6 +37,8 @@ public class Sante extends Assurance {
     public Sante() {
 
     }
+
+
 
     @Override
     public double calculerMontant() {
@@ -73,5 +82,13 @@ public class Sante extends Assurance {
     public void setTypeCouverture(TypeCouverture typeCouverture) {
         this.typeCouverture = typeCouverture;
     }
+
+    public boolean isEtatSante() {
+        return etatSante;
+    }
+
+
+
+
 }
 
