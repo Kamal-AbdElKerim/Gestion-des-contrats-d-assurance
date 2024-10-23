@@ -40,7 +40,45 @@ public class Contrat {
         this.id = id;
     }
 
+    public LocalDateTime getDatedebut() {
+        return datedebut;
+    }
 
+    public void setDatedebut(LocalDateTime datedebut) {
+        this.datedebut = datedebut;
+    }
+
+    public LocalDateTime getDatefin() {
+        return datefin;
+    }
+
+    public void setDatefin(LocalDateTime datefin) {
+        this.datefin = datefin;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
 
     public Devis getDevis() {
         return devis;

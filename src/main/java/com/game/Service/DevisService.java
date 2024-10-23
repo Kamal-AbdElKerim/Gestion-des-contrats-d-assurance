@@ -1,6 +1,7 @@
 package com.game.Service;
 
 import com.game.entity.Devis;
+import com.game.entity.DevisStatus;
 import com.game.repository.DevisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,13 +29,16 @@ public class DevisService {
         }
     }
 
-    // Method to update a Devis
-    public Devis updateDevis(Long id, Devis updatedDevis) throws Exception {
-        Devis existingDevis = getDevisById(id);
-        existingDevis.setMontant(updatedDevis.getMontant());
-        existingDevis.setAssurance(updatedDevis.getAssurance());
-        // Update other fields if needed
-        return devisRepository.save(existingDevis);
+    public void acceptDevis(Long id) throws Exception {
+        // Find the Devis by ID
+        Devis devis = devisRepository.findById(id)
+                .orElseThrow(() -> new Exception("Devis not found with id: " + id));
+
+        // Update the status
+        devis.setStatus(DevisStatus.ACCEPTED);
+
+        // Save the updated Devis back to the repository
+        devisRepository.save(devis);
     }
 
     // Method to delete a Devis by its ID
