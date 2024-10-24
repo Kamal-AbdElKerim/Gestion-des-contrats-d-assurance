@@ -42,7 +42,7 @@ public class Sante extends Assurance {
 
     @Override
     public double calculerMontant() {
-        double base = 150.0; // Base en MAD
+        double base = 150.0;
 
         if (age > 60) {
             base += base * 0.20;
@@ -52,7 +52,6 @@ public class Sante extends Assurance {
             base += base * 0.30;
         }
 
-        // Ajustement selon le type de couverture
         if (typeCouverture == typeCouverture.BASE) {
             base -= base * 0.10;
         } else if (typeCouverture == typeCouverture.PREMIUM) {
