@@ -31,10 +31,15 @@ public class AssuranceController {
     private DevisService devisService;
 
     @GetMapping("/automobile")
-    public String showAutomobileInsuranceForm(Model model) {
-        List<Automobile> Automobile = automobileService.getAllAutomobile();
-        model.addAttribute("Automobile", Automobile);
-        return "demandeAutomobileDevis"; // JSP page for automobile insurance
+    public String showAutomobileInsuranceForm(Model model , HttpSession session) {
+
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            List<Automobile> Automobile = automobileService.getAllAutomobile();
+            model.addAttribute("Automobile", Automobile);
+            return "demandeAutomobileDevis";
+        }
+        return "redirect:/login";
     }
 
     @PostMapping("/automobile")
@@ -58,10 +63,16 @@ public class AssuranceController {
     }
 
     @GetMapping("/sante")
-    public String showHealthInsuranceForm(Model model) {
-        List<Sante> Santes = santeService.getAllSante();
-        model.addAttribute("Santes", Santes);
-        return "demandeSantesDevis";
+    public String showHealthInsuranceForm(Model model , HttpSession session) {
+
+
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            List<Sante> Santes = santeService.getAllSante();
+            model.addAttribute("Santes", Santes);
+            return "demandeSantesDevis";
+        }
+        return "redirect:/login";
     }
 
     @PostMapping("/sante")
@@ -95,10 +106,15 @@ public class AssuranceController {
     }
 
     @GetMapping("/habitation")
-    public String showHomeInsuranceForm(Model model) {
-        List<Habitation> Habitation = habitationService.getAllHabitation();
-        model.addAttribute("Habitation", Habitation);
-        return "demandeHabitationDevis";
+    public String showHomeInsuranceForm(Model model , HttpSession session) {
+
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            List<Habitation> Habitation = habitationService.getAllHabitation();
+            model.addAttribute("Habitation", Habitation);
+            return "demandeHabitationDevis";
+        }
+        return "redirect:/login";
     }
 
     @PostMapping("/habitation")

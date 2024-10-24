@@ -96,9 +96,14 @@ public class ContratController {
 
     @GetMapping("allContrat")
     public String allContrat(Model model ,HttpSession session) {
-        List<Contrat> contrats = contratService.getContratByUserAuth(session);
-        model.addAttribute("contrats", contrats);
-        return "MyContrat";
+
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            List<Contrat> contrats = contratService.getContratByUserAuth(session);
+            model.addAttribute("contrats", contrats);
+            return "MyContrat";
+        }
+        return "redirect:/login";
     }
 
     @GetMapping("/deleteContract/{id}")
@@ -110,6 +115,7 @@ public class ContratController {
             redirectAttributes.addFlashAttribute("error", "Error deleting contract. Please try again.");
         }
         return new ModelAndView("redirect:/allContrat");
+
     }
 
     @GetMapping("/editContractSante/{id}")
