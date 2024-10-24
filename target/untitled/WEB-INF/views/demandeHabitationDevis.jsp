@@ -6,7 +6,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Health Insurance Quotes</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"><body>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"></head>
+<body>
+<jsp:include page="navbar.jsp"/>
 <div class="container my-5">
   <h1 class="text-center mb-4">Health Insurance Quotes</h1>
   <div class="row container ">
@@ -18,7 +20,7 @@
 
 
           <div class="card " style="width: 18rem;">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFngbrQUFD_57VZ7xUS9AzXbdFd-kPixlYTQ&s" class="card-img-top" alt="...">
+            <img src="https://www.immomanosque.com/wp-content/uploads/2024/04/assurance-habitation.jpeg" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">Assurance Type: ${habitation.typeAssurance}</h5>
               <h6 class="card-subtitle mb-2 text-muted">systemeSecurite: ${habitation.systemeSecurite}</h6>

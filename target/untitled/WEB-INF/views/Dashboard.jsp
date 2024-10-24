@@ -10,10 +10,11 @@
   <title>Dashboard</title>
 </head>
 <body>
+<jsp:include page="navbar.jsp"/>
 <div class="container">
   <h2>Bienvenue, ${user.name}!</h2>
   <p>Voici votre tableau de bord.</p>
-  <a href="logout">Logout</a>
+
 
   <button onclick="document.getElementById('modalAutomobile').style.display='block'" class="btn btn-primary">Automobile</button>
   <button onclick="document.getElementById('modalSante').style.display='block'" class="btn btn-primary">Santé</button>
@@ -102,10 +103,10 @@
         </select>
 
         <label for="localisation"><b>zone Risque</b></label>
-        <input id="localisation" type="checkbox" placeholder="Zone à risque" name="zoneRisque" required>
+        <input id="localisation" type="checkbox" placeholder="Zone à risque" name="zoneRisque" >
 
         <label for="securite"><b>systeme Securite</b></label>
-        <input id="securite" type="checkbox"  name="systemeSecurite" required>
+        <input id="securite" type="checkbox"  name="systemeSecurite" >
 
 
         <button type="submit" class="btn btn-primary">Calculer le devis</button>

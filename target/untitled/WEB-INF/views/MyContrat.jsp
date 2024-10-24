@@ -24,7 +24,7 @@
     </style>
 </head>
 <body>
-
+<jsp:include page="navbar.jsp"/>
 <h1>My Contracts</h1>
 <c:if test="${not empty message}">
     <div class="alert alert-success">${message}</div>
